@@ -17,7 +17,7 @@ jobs:
       - run: pip install -r requirements.txt -t package
 
       - run: |
-          cp lambda_function.py package/
+          cp handler.py package/
 
       - run: |
           cd package
@@ -30,6 +30,10 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - run: |
+          aws s3 cp package/lambda.zip s3://${{ secrets.S3_BUCKET }}/libraries/lambda.zip
+
+      - run: |
           aws lambda update-function-code \
             --function-name shared-mcp-server \
-            --zip-file fileb://package/lambda.zip
+            --s3-bucket ${{ secrets.S3_BUCKET }} \
+            --s3-key libraries/lambda.zip
