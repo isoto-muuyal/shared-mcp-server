@@ -17,8 +17,7 @@ jobs:
       - run: pip install -r requirements.txt -t package
 
       - run: |
-          cp handler.py package/
-          cp -r tools package/
+          cp lambda_function.py package/
 
       - run: |
           cd package
